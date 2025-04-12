@@ -1,29 +1,31 @@
 # 从零开始构建三层神经网络分类器，实现图像分类
+https://github.com/22307140119/DATA130051_MLP_22307140119
+
 
 ### 代码架构简述
 详见 details.md
 
-- load_CIFAR10.py：读取数据集，独立于其它文件。
-  可以调用 load_cifar10(dir)，从 dir 目录中读取整个 CIFAR10 数据集。
+- load_CIFAR10.py：读取数据集，独立于其它文件。<br>
+  可以调用 load_cifar10(dir)，从 dir 目录中读取整个 CIFAR10 数据集。<br>
   返回标准化后的训练集和数据集，Y 以 one-hot 编码形式存储。
 
-- layers.py：“层”的实现，最底层的文件。
-  定义了 全连接层、激活函数、损失函数，含 前向/反向传播。
-  辅助函数 Softmax(), CrossEntropyLoss()。
-  包含 正则化 的底层实现。
+- layers.py：“层”的实现，最底层的文件。<br>
+  定义了 全连接层、激活函数、损失函数，含 前向/反向传播。<br>
+  辅助函数 Softmax(), CrossEntropyLoss()。<br>
+  包含 正则化 的底层实现。<br>
   包含 梯度下降 的底层实现。
 
-- models.py："层"组织成模型、模型存取，基于 layers.py
+- models.py："层"组织成模型、模型存取，基于 layers.py <br>
   定义了 SimpleModel 类，实现 前向传播、反向传播、参数更新、模型保存与加载。
 
-- lr_scheduler.py：学习率策略，独立于其它文件。
-  实现了 StepExpLR 和 MultiStepExpLR 两个学习率调度器。
-  StepExpLR 支持 学习率预热 + 固定步长的指数衰减。
+- lr_scheduler.py：学习率策略，独立于其它文件。<br>
+  实现了 StepExpLR 和 MultiStepExpLR 两个学习率调度器。<br>
+  StepExpLR 支持 学习率预热 + 固定步长的指数衰减。<br>
   MultiStepExpLR 支持 可变步长的多阶段指数衰减。
 
-- trainer.py：训练，基于“模型”和“学习率调度器”。
-  实现完整训练流程。
-  含 训练集和验证集划分。
+- trainer.py：训练，基于“模型”和“学习率调度器”。<br>
+  实现完整训练流程。<br>
+  含 训练集和验证集划分。<br>
   辅助函数 run_evaluation()，评估模型在给定数据集上的性能。
 
 - main.py：完整训练流程，依赖于上述所有文件。
@@ -36,22 +38,22 @@
 ### 输出说明
 - 输出的训练集准确率是直接使用前向传播结果计算的，不会额外在训练集上评估。开始训练时的训练集准确率可能明显偏低。
 
-- log.csv
+- log.csv <br>
     trainer.train() 日志的输出文件，在每一次训练完成后写入，不会被清空。
 
-- output.txt
+- output.txt <br>
     trainer.train() 日志的输出文件，边训练边写入，在每一次训练开始时被清空。
 
-- trained_model_min_loss
+- trained_model_min_loss <br>
     运行 trainer.train() 后，验证集上准确率最高的模型会保存到该文件夹下。
 
-- trained_model_max_accuracy
+- trained_model_max_accuracy <br>
     运行 trainer.train() 后，验证集上损失最小的模型会保存到该文件夹下。
 
-- param_search_log.csv
+- param_search_log.csv <br>
     main_search.py 日志的输出文件，不会被清空。
 
-- searched_model_max_accuracy
+- searched_model_max_accuracy <br>
     运行 main_search.py 后，验证集上准确率最高的模型会保存到该文件夹下。
 
 
@@ -185,30 +187,30 @@
 
 
 ### 可能的扩展
-- 增加新的层/激活函数/损失函数
-    直接在 layers.py 的对应位置添加。
+- 增加新的层/激活函数/损失函数 <br>
+    直接在 layers.py 的对应位置添加。 <br>
     需要注意 models.py 中 SimpleModel 类对层的一些约束。
 
-- 增加新的正则化方式
-    在 layers.py 中，修改 FCLayer 类的 regularization()。
-        要求“正则化项”在各层之间是可加的。
-        无需修改 GDUpdate()，直接在 regularization() 中将梯度存入 self.drdW 即可。
+- 增加新的正则化方式 <br>
+    在 layers.py 中，修改 FCLayer 类的 regularization()。 <br>
+        要求“正则化项”在各层之间是可加的。 <br>
+        无需修改 GDUpdate()，直接在 regularization() 中将梯度存入 self.drdW 即可。 <br>
     无需修改 models.py。
 
-- 对每一层使用不同的 正则化方法/正则化强度参数
-    可以考虑以列表形式向 model 类中传入不同层的 正则化方法/正则化强度参数。
-    修改 models.py 的 forward() 中和 regularization 相关的逻辑即可。
+- 对每一层使用不同的 正则化方法/正则化强度参数 <br>
+    可以考虑以列表形式向 model 类中传入不同层的 正则化方法/正则化强度参数。 <br>
+    修改 models.py 的 forward() 中和 regularization 相关的逻辑即可。 <br>
     无需修改 layers.py。
 
-- 增加其它优化算法实现
-    代码中直接将 SGD 拆分到最底层的“层”中实现，和 layers.py, models.py, trainer.py 相关，并没有为其它优化算法预留接口。
-    增加其它优化算法可能需要修改 layers.py, models.py, trainer.py 的相关部分。
+- 增加其它优化算法实现 <br>
+    代码中直接将 SGD 拆分到最底层的“层”中实现，和 layers.py, models.py, trainer.py 相关，并没有为其它优化算法预留接口。 <br>
+    增加其它优化算法可能需要修改 layers.py, models.py, trainer.py 的相关部分。 <br>
     或者新增一个“优化器”文件，修改 trainer.py 中的 train_one_batch() 等。
 
-- 增加其它学习率调度器
+- 增加其它学习率调度器 <br>
     在 lr_scheduler 中添加即可。
 
-- 增加数据增强
-    可以添加在 load_CIFAR10.py 的 preprocess_data() 中。
-    也可以直接加在 main.py 中。
+- 增加数据增强 <br>
+    可以添加在 load_CIFAR10.py 的 preprocess_data() 中。 <br>
+    也可以直接加在 main.py 中。 <br>
     也可以在 trainer.py 中添加函数，处理划分完成后的训练集。
