@@ -1,6 +1,7 @@
 # 从零开始构建三层神经网络分类器，实现图像分类
-https://github.com/22307140119/DATA130051_MLP_22307140119
-
+https://github.com/22307140119/DATA130051_MLP_22307140119 <br>
+另一个课程的作业，手写了 CNN: <br>
+https://github.com/22307140119/DATA130011_pj1_22307140119
 
 ### 代码架构简述
 详见 details.md
